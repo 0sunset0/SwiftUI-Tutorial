@@ -23,12 +23,12 @@ struct Scoreboard {
         
         var winningScore = 0
         if doesHighestScoreWin {
-            var winningScore = Int.min
+            winningScore = Int.min
             for player in players {
                 winningScore = max(winningScore, player.score)
             }
         } else {
-            var winningScore = Int.max
+            winningScore = Int.max
             for player in players {
                 winningScore = min(winningScore, player.score)
             }
