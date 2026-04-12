@@ -10,6 +10,12 @@ SwiftUI와 SwiftData를 활용한 친구 생일 관리 앱입니다. Apple의 Sw
 - 미래 날짜 입력 방지 (DatePicker 범위 제한)
 - SwiftData로 앱 재실행 후에도 데이터 유지
 
+## 스크린샷
+
+| List | Birthday Today | Input |
+|:----:|:--------------:|:-----:|
+| ![List](screenshots/list.png) | ![Birthday Today](screenshots/birthday_today.png) | ![Input](screenshots/input.png) |
+
 ## 프로젝트 구조
 
 ```
