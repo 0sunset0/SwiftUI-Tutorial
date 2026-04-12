@@ -26,7 +26,7 @@ Apple's official tutorials designed for anyone new to building apps for Apple pl
 |---------|-------|----------|------|
 | 6 | Custom types and Swift Testing | [Apple Docs](https://developer.apple.com/tutorials/develop-in-swift/welcome-to-data-modeling) | [ScoreKeeper](tutorial/06.%20ScoreKeeper/README.md) |
 | 7 | Models and persistence | [Apple Docs](https://developer.apple.com/tutorials/develop-in-swift/save-data) | [Birthdays](tutorial/07.%20Birthdays/README.md) |
-| 8 | Navigation, editing, and relationships | [Apple Docs](https://developer.apple.com/tutorials/develop-in-swift/navigate-sample-data) | |
+| 8 | Navigation, editing, and relationships | [Apple Docs](https://developer.apple.com/tutorials/develop-in-swift/navigate-sample-data) | [FriendsFavoriteMovies](tutorial/08.%20FriendsFavoriteMovies/README.md) |
 | 9 | Observation and shareable data models | [Apple Docs](https://developer.apple.com/tutorials/develop-in-swift/complete-a-game-with-logic) | |
 
 ### App Development
