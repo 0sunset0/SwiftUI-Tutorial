@@ -17,9 +17,7 @@ struct FriendList: View {
             List {
                 ForEach(friends) { friend in
                     NavigationLink(friend.name){
-                        Text("Detail view for \(friend.name)")
-                            .navigationTitle("Friend")
-                            .navigationBarTitleDisplayMode(.inline)
+                        FriendDetail(friend: friend)
                     }
 
                 }
@@ -34,11 +32,14 @@ struct FriendList: View {
                 .navigationTitle("Friend")
                 .navigationBarTitleDisplayMode(.inline)
         }
-
+    }
+    
+    private func addFriend() {
+        context.insert(Friend(name: "new Friend"))
     }
 }
 
 #Preview {
     FriendList()
-        .modelContainer(SampleDate.shared.modelContainer)
+        .modelContainer(SampleData.shared.modelContainer)
 }

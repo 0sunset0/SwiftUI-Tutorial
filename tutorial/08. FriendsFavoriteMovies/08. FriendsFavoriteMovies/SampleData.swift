@@ -11,8 +11,8 @@ import SwiftData
  @MainActor는 "이 코드는 항상 메인 스레드에서 실행해줘" 라고 보장해주는 키워드
  */
 @MainActor
-class SampleDate {
-    static let shared = SampleDate()
+class SampleData {
+    static let shared = SampleData()
     
     let modelContainer: ModelContainer
     
@@ -21,6 +21,14 @@ class SampleDate {
      */
     var context: ModelContext {
         modelContainer.mainContext
+    }
+    
+    var friend: Friend {
+        Friend.sampleData.first!
+    }
+    
+    var movie: Movie {
+        Movie.sampleData.first!
     }
     
     /**
