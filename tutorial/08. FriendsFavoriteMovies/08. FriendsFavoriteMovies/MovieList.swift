@@ -19,16 +19,36 @@ struct MovieList: View {
                     NavigationLink(movie.title){
                         MovieDetail(movie: movie)
                     }
-
                 }
+                //SwiftUI가 자동으로 indexes를 넣어줌
+                .onDelete(perform: deleteMovies(indexes:))
             }
             .navigationTitle("Movies")
+            .toolbar {
+                ToolbarItem {
+                    Button("Add movie", systemImage: "plus", action: addMovie)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    EditButton()
+                }
+            }
+            
         } detail: {
             Text("Select a movie")
                 .navigationTitle("Movie")
                 .navigationBarTitleDisplayMode(.inline)
         }
         
+    }
+    
+    private func addMovie() {
+        context.insert(Movie(title: "New Movie", releaseDate: .now))
+    }
+    
+    private func deleteMovies(indexes: IndexSet) {
+        for index in indexes {
+            context.delete(movies[index])
+        }
     }
 }
 

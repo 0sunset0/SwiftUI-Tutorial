@@ -21,8 +21,20 @@ struct FriendList: View {
                     }
 
                 }
+                /**
+                 스와이프하여 한 번에 영화를 삭제
+                 */
+                .onDelete(perform: deleteFriends(indexes:))
             }
             .navigationTitle("Friends")
+            .toolbar {
+                ToolbarItem{
+                    Button("Add friend", systemImage: "plus", action: addFriend)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    EditButton()
+                }
+            }
         }
         /**
          기본 상세 보기 화면
@@ -36,6 +48,12 @@ struct FriendList: View {
     
     private func addFriend() {
         context.insert(Friend(name: "new Friend"))
+    }
+    
+    private func deleteFriends(indexes: IndexSet) {
+        for index in indexes {
+            context.delete(friends[index])
+        }
     }
 }
 
