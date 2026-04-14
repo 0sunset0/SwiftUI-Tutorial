@@ -11,6 +11,7 @@ import SwiftData
 struct MovieList: View {
     @Query(sort: \Movie.title) private var movies: [Movie]
     @Environment(\.modelContext) var context
+    @State private var newMovie: Movie?
     
     var body: some View {
         NavigationSplitView {
@@ -32,6 +33,13 @@ struct MovieList: View {
                     EditButton()
                 }
             }
+            //왜 이게 + 버튼 누르면 뜨는거지..
+            .sheet(item: $newMovie) {movie in
+                NavigationStack {
+                    MovieDetail(movie: movie, isNew: true)
+                }
+                .interactiveDismissDisabled()
+            }
             
         } detail: {
             Text("Select a movie")
@@ -42,7 +50,9 @@ struct MovieList: View {
     }
     
     private func addMovie() {
-        context.insert(Movie(title: "New Movie", releaseDate: .now))
+        let newMovie = Movie(title: "", releaseDate: .now)
+        context.insert(newMovie)
+        self.newMovie = newMovie
     }
     
     private func deleteMovies(indexes: IndexSet) {

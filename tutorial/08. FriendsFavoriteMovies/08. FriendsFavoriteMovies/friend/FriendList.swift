@@ -11,6 +11,7 @@ import SwiftData
 struct FriendList: View {
     @Query(sort: \Friend.name) private var friends: [Friend]
     @Environment(\.modelContext) private var context
+    @State private var newFriend: Friend?
     
     var body: some View {
         NavigationSplitView {
@@ -22,7 +23,7 @@ struct FriendList: View {
 
                 }
                 /**
-                 스와이프하여 한 번에 영화를 삭제
+                 스와이프하여 한 번에 Friend를 삭제
                  */
                 .onDelete(perform: deleteFriends(indexes:))
             }
@@ -35,7 +36,16 @@ struct FriendList: View {
                     EditButton()
                 }
             }
-        }
+            /**
+             $newFriend가 nil이 아니면 sheet가 띄워짐
+             */
+            .sheet(item: $newFriend) { friend in
+                NavigationStack {
+                    FriendDetail(friend: friend, isNew: true)
+                }
+                .interactiveDismissDisabled()
+            }
+         }
         /**
          기본 상세 보기 화면
          */
@@ -47,7 +57,9 @@ struct FriendList: View {
     }
     
     private func addFriend() {
-        context.insert(Friend(name: "new Friend"))
+        let newFriend = Friend(name: "")
+        context.insert(newFriend)
+        self.newFriend = newFriend
     }
     
     private func deleteFriends(indexes: IndexSet) {
