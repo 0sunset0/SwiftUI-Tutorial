@@ -9,44 +9,55 @@ import SwiftUI
 import SwiftData
 
 struct MovieList: View {
-    @Query(sort: \Movie.title) private var movies: [Movie]
+    @Query private var movies: [Movie]
     @Environment(\.modelContext) var context
     @State private var newMovie: Movie?
     
-    var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(movies) { movie in
-                    NavigationLink(movie.title){
-                        MovieDetail(movie: movie)
-                    }
-                }
-                //SwiftUI가 자동으로 indexes를 넣어줌
-                .onDelete(perform: deleteMovies(indexes:))
-            }
-            .navigationTitle("Movies")
-            .toolbar {
-                ToolbarItem {
-                    Button("Add movie", systemImage: "plus", action: addMovie)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    EditButton()
-                }
-            }
-            //왜 이게 + 버튼 누르면 뜨는거지..
-            .sheet(item: $newMovie) {movie in
-                NavigationStack {
-                    MovieDetail(movie: movie, isNew: true)
-                }
-                .interactiveDismissDisabled()
-            }
-            
-        } detail: {
-            Text("Select a movie")
-                .navigationTitle("Movie")
-                .navigationBarTitleDisplayMode(.inline)
+    /**
+     Predicate: SwiftData에서 데이터 필터링 조건을 만드는 매크로입니다. SQL의 WHERE 절과 같은 역할이에요.
+     */
+    init(titleFilter: String = ""){
+        let predicate = #Predicate<Movie> { movie in
+            titleFilter.isEmpty || movie.title.contains(titleFilter)
         }
-        
+        // 조건 + 정렬을 적용해서 @Query 초기화
+        // SwiftUI에서 @Query는 내부적으로 _movies라는 이름으로 저장되어 있어서, init 안에서 초기화할 때는 _movies로 접근해야 함
+        _movies = Query(filter: predicate, sort: \Movie.title)
+    }
+    
+    var body: some View {
+        Group {
+            if !movies.isEmpty {
+                List {
+                    ForEach(movies) { movie in
+                        NavigationLink(movie.title){
+                            MovieDetail(movie: movie)
+                        }
+                    }
+                    //SwiftUI가 자동으로 indexes를 넣어줌
+                    .onDelete(perform: deleteMovies(indexes:))
+                }
+            } else {
+                ContentUnavailableView("Add Movies", systemImage: "film.stack")
+            }
+        }
+        .navigationTitle("Movies")
+        .toolbar {
+            ToolbarItem {
+                Button("Add movie", systemImage: "plus", action: addMovie)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                EditButton()
+            }
+        }
+        //왜 이게 + 버튼 누르면 뜨는거지..
+        .sheet(item: $newMovie) {movie in
+            NavigationStack {
+                MovieDetail(movie: movie, isNew: true)
+            }
+            .interactiveDismissDisabled()
+            
+        }
     }
     
     private func addMovie() {
@@ -63,6 +74,22 @@ struct MovieList: View {
 }
 
 #Preview {
-    MovieList()
-        .modelContainer(SampleData.shared.modelContainer)
+    NavigationStack {
+        MovieList()
+            .modelContainer(SampleData.shared.modelContainer)
+    }
+}
+
+#Preview("Filtered") {
+    NavigationStack {
+        MovieList(titleFilter: "tr")
+            .modelContainer(SampleData.shared.modelContainer)
+    }
+}
+
+#Preview("Empty List") {
+    NavigationStack {
+        MovieList(titleFilter: "tr")
+            .modelContainer(for: Movie.self, inMemory: true)
+    }
 }

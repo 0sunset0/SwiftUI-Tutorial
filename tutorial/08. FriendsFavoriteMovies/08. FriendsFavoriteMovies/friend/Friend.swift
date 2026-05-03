@@ -11,6 +11,7 @@ import SwiftData
 @Model
 class Friend {
     var name: String
+    var favoriteMovie: Movie?
     
     init(name: String) {
         self.name = name
@@ -21,6 +22,7 @@ class Friend {
         Friend(name: "Jin-woo"),
         Friend(name: "Jin-hyeok"),
         Friend(name: "Jin-hyuck"),
+        Friend(name: "Sunset")
     ]
 
 }

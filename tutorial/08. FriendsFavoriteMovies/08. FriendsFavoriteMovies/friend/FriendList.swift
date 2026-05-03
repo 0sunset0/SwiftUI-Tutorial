@@ -15,17 +15,26 @@ struct FriendList: View {
     
     var body: some View {
         NavigationSplitView {
-            List {
-                ForEach(friends) { friend in
-                    NavigationLink(friend.name){
-                        FriendDetail(friend: friend)
+            /**
+             Group은 여러 뷰를 하나로 묶어서 modifier를 중복 없이 한 번만 적용하기 위해 사용합니다.
+             */
+            Group {
+                if !friends.isEmpty {
+                    List {
+                        ForEach(friends) { friend in
+                            NavigationLink(friend.name){
+                                FriendDetail(friend: friend)
+                            }
+                        }
+                        /**
+                         스와이프하여 한 번에 Friend를 삭제
+                         */
+                        .onDelete(perform: deleteFriends(indexes:))
                     }
-
+                } else {
+                    //콘텐츠가 없거나 비어있을 때 보여주는 전용 안내 화면
+                    ContentUnavailableView("Add Frined", systemImage: "person.and.person")
                 }
-                /**
-                 스와이프하여 한 번에 Friend를 삭제
-                 */
-                .onDelete(perform: deleteFriends(indexes:))
             }
             .navigationTitle("Friends")
             .toolbar {
@@ -72,4 +81,9 @@ struct FriendList: View {
 #Preview {
     FriendList()
         .modelContainer(SampleData.shared.modelContainer)
+}
+
+#Preview("Empty List") {
+    FriendList()
+        .modelContainer(for: Friend.self, inMemory: true)
 }

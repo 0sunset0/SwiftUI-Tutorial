@@ -20,11 +20,25 @@ struct MovieDetail: View {
         self.isNew = isNew
     }
     
+    var sortedFriends: [Friend] {
+        movie.favoriteBy.sorted { first, second in
+            first.name < second.name
+        }
+    }
+    
     var body: some View {
         Form {
             TextField("movie title", text: $movie.title)
             
             DatePicker("Release date", selection: $movie.releaseDate, displayedComponents: .date)
+            
+            if !sortedFriends.isEmpty {
+                Section("Favorited by") {
+                    ForEach(sortedFriends) { friend in
+                        Text(friend.name)
+                    }
+                }
+            }
         }
         /**
          이게 부모 뷰에서 하면 중복 코드가 생김.
